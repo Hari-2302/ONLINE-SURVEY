@@ -13,6 +13,10 @@ mongoose
   .then(() => console.log("MongoDB connected successfully"))
   .catch((error) => console.log("MongoDB error:", error));
 
+app.get('/', (req, res) => {
+  res.send('FeedBack Backend is running successfully!');
+});
+
 const surveySchema = new mongoose.Schema({
   question: {
     type: String,
