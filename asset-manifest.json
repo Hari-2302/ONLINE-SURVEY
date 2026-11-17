@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/TASK-MANAGEMENT/static/css/main.4bcafb0e.css",
-    "main.js": "/TASK-MANAGEMENT/static/js/main.2a7d769d.js",
-    "static/js/453.0d12f83a.chunk.js": "/TASK-MANAGEMENT/static/js/453.0d12f83a.chunk.js",
-    "index.html": "/TASK-MANAGEMENT/index.html",
-    "main.4bcafb0e.css.map": "/TASK-MANAGEMENT/static/css/main.4bcafb0e.css.map",
-    "main.2a7d769d.js.map": "/TASK-MANAGEMENT/static/js/main.2a7d769d.js.map",
-    "453.0d12f83a.chunk.js.map": "/TASK-MANAGEMENT/static/js/453.0d12f83a.chunk.js.map"
+    "main.css": "/ONLINE-SURVEY/static/css/main.4bcafb0e.css",
+    "main.js": "/ONLINE-SURVEY/static/js/main.3a8750f6.js",
+    "static/js/453.0d12f83a.chunk.js": "/ONLINE-SURVEY/static/js/453.0d12f83a.chunk.js",
+    "index.html": "/ONLINE-SURVEY/index.html",
+    "main.4bcafb0e.css.map": "/ONLINE-SURVEY/static/css/main.4bcafb0e.css.map",
+    "main.3a8750f6.js.map": "/ONLINE-SURVEY/static/js/main.3a8750f6.js.map",
+    "453.0d12f83a.chunk.js.map": "/ONLINE-SURVEY/static/js/453.0d12f83a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4bcafb0e.css",
-    "static/js/main.2a7d769d.js"
+    "static/js/main.3a8750f6.js"
   ]
 }
