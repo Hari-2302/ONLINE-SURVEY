@@ -1,10 +1,13 @@
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-const API = process.env.REACT_APP_API ||"https://online-survey-backend-c330.onrender.com";
+const API =
+  process.env.REACT_APP_API ||
+  "https://online-survey-backend-c330.onrender.com";
+
+const SURVEYS_API = `${API}/surveys`;
 
 function App() {
   const [surveys, setSurveys] = useState([]);
@@ -17,9 +20,10 @@ function App() {
 
   const fetchSurveys = async () => {
     try {
-      const response = await axios.get(API);
-      setSurveys(response.data);
+      const response = await axios.get(SURVEYS_API);
+      setSurveys(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
+      setSurveys([]);
       setMessage("Cannot connect to server. Please check backend.");
     }
   };
@@ -37,7 +41,7 @@ function App() {
     }
 
     try {
-      await axios.post(API, {
+      await axios.post(SURVEYS_API, {
         question,
         options: [option1, option2],
       });
@@ -59,7 +63,7 @@ function App() {
     }
 
     try {
-      await axios.post(`${API}/${surveyId}/responses`, {
+      await axios.post(`${SURVEYS_API}/${surveyId}/responses`, {
         answer: answers[surveyId],
       });
 
@@ -73,7 +77,7 @@ function App() {
 
   const showResults = async (surveyId) => {
     try {
-      const response = await axios.get(`${API}/${surveyId}/results`);
+      const response = await axios.get(`${SURVEYS_API}/${surveyId}/results`);
       setResults((oldResults) => ({
         ...oldResults,
         [surveyId]: response.data,
@@ -91,9 +95,7 @@ function App() {
           Create surveys and share your opinion
         </p>
 
-        {message && (
-          <div className="alert alert-info">{message}</div>
-        )}
+        {message && <div className="alert alert-info">{message}</div>}
 
         <div className="card shadow-sm p-4 mb-5">
           <h3>Create a Survey</h3>
@@ -138,60 +140,63 @@ function App() {
         )}
 
         <div className="row">
-          {surveys.map((survey) => (
-            <div className="col-md-6 mb-4" key={survey._id}>
-              <div className="card survey-card p-4 h-100 shadow-sm">
-                <h5>{survey.question}</h5>
+          {Array.isArray(surveys) &&
+            surveys.map((survey) => (
+              <div className="col-md-6 mb-4" key={survey._id}>
+                <div className="card survey-card p-4 h-100 shadow-sm">
+                  <h5>{survey.question}</h5>
 
-                {survey.options.map((option) => (
-                  <label className="option-item" key={option}>
-                    <input
-                      type="radio"
-                      name={survey._id}
-                      value={option}
-                      checked={answers[survey._id] === option}
-                      onChange={() =>
-                        setAnswers((oldAnswers) => ({
-                          ...oldAnswers,
-                          [survey._id]: option,
-                        }))
-                      }
-                    />
-                    <span>{option}</span>
-                  </label>
-                ))}
-
-                <button
-                  className="btn btn-success mt-3"
-                  onClick={() => submitAnswer(survey._id)}
-                >
-                  Submit Response
-                </button>
-
-                <button
-                  className="btn btn-outline-primary mt-2"
-                  onClick={() => showResults(survey._id)}
-                >
-                  View Results
-                </button>
-
-                {results[survey._id] && (
-                  <div className="result-box mt-3">
-                    <h6>Survey Results</h6>
-                    <p>
-                      Total responses: {results[survey._id].totalResponses}
-                    </p>
-
-                    {results[survey._id].results.map((item) => (
-                      <p key={item.option}>
-                        {item.option}: {item.votes} votes
-                      </p>
+                  {Array.isArray(survey.options) &&
+                    survey.options.map((option) => (
+                      <label className="option-item" key={option}>
+                        <input
+                          type="radio"
+                          name={survey._id}
+                          value={option}
+                          checked={answers[survey._id] === option}
+                          onChange={() =>
+                            setAnswers((oldAnswers) => ({
+                              ...oldAnswers,
+                              [survey._id]: option,
+                            }))
+                          }
+                        />
+                        <span>{option}</span>
+                      </label>
                     ))}
-                  </div>
-                )}
+
+                  <button
+                    className="btn btn-success mt-3"
+                    onClick={() => submitAnswer(survey._id)}
+                  >
+                    Submit Response
+                  </button>
+
+                  <button
+                    className="btn btn-outline-primary mt-2"
+                    onClick={() => showResults(survey._id)}
+                  >
+                    View Results
+                  </button>
+
+                  {results[survey._id] && (
+                    <div className="result-box mt-3">
+                      <h6>Survey Results</h6>
+                      <p>
+                        Total responses: {results[survey._id].totalResponses}
+                      </p>
+
+                      {Array.isArray(results[survey._id].results) &&
+                        results[survey._id].results.map((item) => (
+                          <p key={item.option}>
+                            {item.option}: {item.votes} votes
+                          </p>
+                        ))}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </div>
